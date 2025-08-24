@@ -1,471 +1,171 @@
 <!DOCTYPE html>
-
 <head>
-  <meta charset="utf-8" />
-  <html lang="uk">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Тестове завдання — FB Ads контент</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b0d12;
-      --panel: #11141b;
-      --muted: #9aa3b2;
-      --text: #e7ecf5;
-      --accent: #6e8dff;
-      --accent-2: #00d4ff;
-      --ok: #27c155;
-      --warn: #ffb020;
-      --radius: 18px;
-      --shadow: 0 12px 30px rgba(0, 0, 0, .35)
-    }
-
-    * {
-      box-sizing: border-box
-    }
-
-    html,
-    body {
-      background: linear-gradient(180deg, #0b0d12 0%, #0c111a 100%);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
-    }
-
-    body {
-      margin: 0
-    }
-
-    .wrap {
-      max-width: 1100px;
-      margin: 32px auto 140px;
-      padding: 0 18px
-    }
-
-    .hero {
-      background: radial-gradient(1200px 600px at 15% -10%, rgba(110, 141, 255, .25), transparent 60%), radial-gradient(1200px 700px at 85% -5%, rgba(0, 212, 255, .18), transparent 55%);
-      border: 1px solid rgba(255, 255, 255, .04);
-      border-radius: 24px;
-      box-shadow: var(--shadow);
-      padding: 28px
-    }
-
-    .title {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px
-    }
-
-    .subtitle {
-      margin-top: 6px;
-      color: var(--muted)
-    }
-
-    .notes,
-    .task {
-      background: var(--panel);
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 16px;
-      padding: 16px 18px;
-      margin-top: 14px
-    }
-
-    .chip {
-      display: inline-block;
-      padding: 6px 10px;
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--muted);
-      margin-right: 8px;
-      background: rgba(255, 255, 255, .02)
-    }
-
-    .fio {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      background: var(--panel);
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 16px;
-      padding: 14px 16px
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center
-    }
-
-    .fio label {
-      font-size: 14px;
-      color: var(--muted)
-    }
-
-    .fio input {
-      flex: 1 1 260px;
-      height: 44px;
-      padding: 0 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, .08);
-      background: #0e131b;
-      color: var(--text);
-      outline: none
-    }
-
-    .fio input[disabled] {
-      opacity: .8;
-      filter: saturate(.7);
-      cursor: not-allowed
-    }
-
-    .warn {
-      color: var(--warn);
-      font-size: 13px;
-      display: none
-    }
-
-    .grid {
-      margin-top: 22px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      overflow: hidden
-    }
-
-    .card-head {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, .06)
-    }
-
-    .tag {
-      font-weight: 700;
-      color: #fff
-    }
-
-    .name {
-      color: var(--muted);
-      font-weight: 500
-    }
-
-    .card-body {
-      display: grid;
-      gap: 16px;
-      padding: 16px
-    }
-
-    @media(min-width:900px) {
-      .card-body {
-        grid-template-columns: 1.05fr .95fr
-      }
-    }
-
-    .video {
-      background: #0e131b;
-      border: 1px solid rgba(255, 255, 255, .06);
-      border-radius: 16px;
-      overflow: hidden
-    }
-
-    .ratio {
-      position: relative;
-      padding-top: 56.25%
-    }
-
-    .ratio iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0
-    }
-
-    .go-site {
-      display: block;
-      text-align: center;
-      margin: 10px 0 0;
-      padding: 14px 18px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      color: #0b0d12;
-      font-weight: 800;
-      border: none;
-      border-radius: 12px;
-      text-decoration: none;
-      box-shadow: 0 10px 24px rgba(110, 141, 255, .35), inset 0 -2px 0 rgba(0, 0, 0, .2);
-      transition: transform .15s ease
-    }
-
-    .go-site:hover {
-      transform: translateY(-1px)
-    }
-
-    .fields .lab {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 110px;
-      padding: 12px 12px 14px;
-      border-radius: 12px;
-      resize: vertical;
-      background: #0e131b;
-      color: var(--text);
-      border: 1px solid rgba(255, 255, 255, .08);
-      outline: none
-    }
-
-    textarea.invalid,
-    .fio input.invalid {
-      border-color: #ff5a5a;
-      box-shadow: 0 0 0 2px rgba(255, 90, 90, .15) inset
-    }
-
-    .stack {
-      display: grid;
-      gap: 12px
-    }
-
-    .submit {
-      position: sticky;
-      bottom: 18px;
-      display: flex;
-      justify-content: center;
-      margin-top: 26px
-    }
-
-    .btn {
-      appearance: none;
-      border: 0;
-      cursor: pointer;
-      padding: 16px 22px;
-      border-radius: 14px;
-      font-weight: 800;
-      letter-spacing: .3px;
-      background: linear-gradient(90deg, var(--ok), #38e182);
-      color: #05210f;
-      box-shadow: 0 12px 28px rgba(39, 193, 85, .35);
-      transition: all .2s
-    }
-
-    .btn:disabled {
-      filter: grayscale(1);
-      opacity: .6;
-      cursor: not-allowed
-    }
-
-    .btn:hover:not(:disabled) {
-      transform: translateY(-1px)
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-top: 6px
-    }
-
-    .btn-save {
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #58c1ff, #6e8dff);
-      color: #0b0d12;
-      border: 0;
-      cursor: pointer
-    }
-
-    .btn-save:disabled {
-      opacity: .7;
-      cursor: not-allowed
-    }
-
-    .icon-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, .1);
-      background: #0e131b;
-      color: #cfe1ff;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center
-    }
-
-    .icon-btn[hidden] {
-      display: none
-    }
-
-    .hint {
-      font-size: 12px;
-      color: var(--muted)
-    }
-
-    .debug {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      padding: 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      max-width: 300px;
-      word-wrap: break-word;
-      z-index: 1000;
-      display: none !important
-    }
-  </style>
+<meta charset="utf-8" />
+<html lang="uk">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Тестове завдання — FB Ads контент</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0d12;--panel:#11141b;--muted:#9aa3b2;--text:#e7ecf5;--accent:#6e8dff;--accent-2:#00d4ff;--ok:#27c155;--warn:#ffb020;--radius:18px;--shadow:0 12px 30px rgba(0,0,0,.35)}
+  *{box-sizing:border-box} html,body{background:linear-gradient(180deg,#0b0d12 0%,#0c111a 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif} body{margin:0}
+  .wrap{max-width:1100px;margin:32px auto 140px;padding:0 18px}
+  .hero{background:radial-gradient(1200px 600px at 15% -10%,rgba(110,141,255,.25),transparent 60%),radial-gradient(1200px 700px at 85% -5%,rgba(0,212,255,.18),transparent 55%);border:1px solid rgba(255,255,255,.04);border-radius:24px;box-shadow:var(--shadow);padding:28px}
+  .title{font-size:28px;font-weight:700;letter-spacing:.2px}.subtitle{margin-top:6px;color:var(--muted)}
+  .notes,.task{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px 18px;margin-top:14px}
+  .chip{display:inline-block;padding:6px 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;font-size:12px;color:var(--muted);margin-right:8px;background:rgba(255,255,255,.02)}
+  .fio{margin-top:16px;display:grid;grid-template-columns:1fr;gap:10px;background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px 16px}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .fio label{font-size:14px;color:var(--muted)}
+  .fio input{flex:1 1 260px;height:44px;padding:0 14px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:#0e131b;color:var(--text);outline:none}
+  .fio input[disabled]{opacity:.8;filter:saturate(.7);cursor:not-allowed}
+  .warn{color:var(--warn);font-size:13px;display:none}
+  .grid{margin-top:22px;display:grid;grid-template-columns:1fr;gap:18px}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+  .card-head{display:flex;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tag{font-weight:700;color:#fff}.name{color:var(--muted);font-weight:500}
+  .card-body{display:grid;gap:16px;padding:16px} @media(min-width:900px){.card-body{grid-template-columns:1.05fr .95fr}}
+  .video{background:#0e131b;border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden}
+  .ratio{position:relative;padding-top:56.25%}.ratio iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .go-site{display:block;text-align:center;margin:10px 0 0;padding:14px 18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#0b0d12;font-weight:800;border:none;border-radius:12px;text-decoration:none;box-shadow:0 10px 24px rgba(110,141,255,.35),inset 0 -2px 0 rgba(0,0,0,.2);transition:transform .15s ease}
+  .go-site:hover{transform:translateY(-1px)}
+  .fields .lab{font-size:13px;color:var(--muted);margin-bottom:6px}
+  textarea{width:100%;min-height:110px;padding:12px 12px 14px;border-radius:12px;resize:vertical;background:#0e131b;color:var(--text);border:1px solid rgba(255,255,255,.08);outline:none}
+  textarea.invalid, .fio input.invalid{border-color:#ff5a5a;box-shadow:0 0 0 2px rgba(255,90,90,.15) inset}
+  .stack{display:grid;gap:12px}
+  .submit{position:sticky;bottom:18px;display:flex;justify-content:center;margin-top:26px}
+  .btn{appearance:none;border:0;cursor:pointer;padding:16px 22px;border-radius:14px;font-weight:800;letter-spacing:.3px;background:linear-gradient(90deg,var(--ok),#38e182);color:#05210f;box-shadow:0 12px 28px rgba(39,193,85,.35);transition:all .2s}
+  .btn:disabled{filter:grayscale(1);opacity:.6;cursor:not-allowed}
+  .btn:hover:not(:disabled){transform:translateY(-1px)}
+  .actions{display:flex;gap:10px;align-items:center;margin-top:6px}
+  .btn-save{padding:10px 14px;border-radius:10px;font-weight:700;background:linear-gradient(90deg,#58c1ff,#6e8dff);color:#0b0d12;border:0;cursor:pointer}
+  .btn-save:disabled{opacity:.7;cursor:not-allowed}
+  .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#0e131b;color:#cfe1ff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+  .icon-btn[hidden]{display:none}
+  .hint{font-size:12px;color:var(--muted)}
+  .debug{position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:#fff;padding:8px;border-radius:4px;font-size:11px;max-width:300px;word-wrap:break-word;z-index:1000;display:none!important}
+</style>
 </head>
-
 <body>
 
-  <div class="wrap">
-    <section class="hero">
-      <div class="title">Тестове завдання — Facebook Ads • копірайт + експрес-аналіз</div>
-      <div class="subtitle">Заповніть поля для кожного товару. Під час роботи ми фіксуємо час перегляду та час набору
-        тексту (приховано).</div>
+<div class="wrap">
+  <section class="hero">
+    <div class="title">Тестове завдання — Facebook Ads • копірайт + експрес-аналіз</div>
+    <div class="subtitle">Заповніть поля для кожного товару. Під час роботи ми фіксуємо час перегляду та час набору тексту (приховано).</div>
 
-      <div class="task">
-        <span class="chip">Завдання</span>
-        <ol>
-          <li><b>На цій сторінці</b> потрібно написати рекламний текст на кожний товар для Facebook Ads.</li>
-          <li>Проаналізувати креатив і сайт та стисло написати думку: чи продає товар; що Ви змінили б на сайті/в
-            креативі (або все ок). Додайте <b>таргет та інтереси</b>.</li>
-        </ol>
-      </div>
-
-      <div class="notes">
-        <span class="chip">Примітки</span>
-        <ul>
-          <li>Оформлюйте в цьому файлі. Заповнюйте всі форми та тисніть в кінці "Відправити".</li>
-          <li>Сайт не адаптований під ПК — оцінюйте з телефона або в режимі mobile.</li>
-        </ul>
-      </div>
-
-      <div class="fio">
-        <div class="row">
-          <label for="fio">Ваше ПІБ:</label>
-          <input id="fio" type="text" placeholder="Прізвище Ім&#39;я По батькові" />
-        </div>
-        <span id="fioWarn" class="warn">Вкажіть ПІБ, будь ласка.</span>
-
-        <div class="row">
-          <label for="tg">Ваш Telegram:</label>
-          <input id="tg" type="text" placeholder="@username або посилання" />
-        </div>
-        <span id="tgWarn" class="warn">Вкажіть Telegram, будь ласка.</span>
-
-        <div class="actions">
-          <button id="savePerson" class="btn-save">Зберегти</button>
-          <button id="editPerson" class="icon-btn" title="Редагувати" hidden aria-label="Редагувати">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zm17.71-10.04a1.003 1.003 0 0 0 0-1.42l-2.5-2.5a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 1.99-1.66z" />
-            </svg>
-          </button>
-          <span class="hint" id="saveHint"></span>
-        </div>
-      </div>
-    </section>
-
-    <section id="items" class="grid"></section>
-
-    <div class="submit">
-      <button id="sendBtn" class="btn" disabled>Відправити</button>
+    <div class="task">
+      <span class="chip">Завдання</span>
+      <ol>
+        <li><b>На цій сторінці</b> потрібно написати рекламний текст на кожний товар для Facebook Ads.</li>
+        <li>Проаналізувати креатив і сайт та стисло написати думку: чи продає товар; що Ви змінили б на сайті/в креативі (або все ок). Додайте <b>таргет та інтереси</b>.</li>
+      </ol>
     </div>
+
+    <div class="notes">
+      <span class="chip">Примітки</span>
+      <ul>
+        <li>Оформлюйте в цьому файлі. Заповнюйте всі форми та тисніть в кінці "Відправити".</li>
+        <li>Сайт не адаптований під ПК — оцінюйте з телефона або в режимі mobile.</li>
+      </ul>
+    </div>
+
+    <div class="fio">
+      <div class="row">
+        <label for="fio">Ваше ПІБ:</label>
+        <input id="fio" type="text" placeholder="Прізвище Ім&#39;я По батькові" />
+      </div>
+      <span id="fioWarn" class="warn">Вкажіть ПІБ, будь ласка.</span>
+
+      <div class="row">
+        <label for="tg">Ваш Telegram:</label>
+        <input id="tg" type="text" placeholder="@username, t.me/username або https://t.me/username" />
+      </div>
+      <span id="tgWarn" class="warn">Неправильний формат. Використовуйте @username, t.me/username або https://t.me/username</span>
+    </div>
+  </section>
+
+  <section id="items" class="grid"></section>
+
+  <div class="submit">
+    <button id="sendBtn" class="btn" disabled>Відправити</button>
   </div>
+</div>
 
-  <div id="debug" class="debug" style="display:none;"></div>
+<div id="debug" class="debug" style="display:none;"></div>
 
-  <script>
-    (function () {
-      'use strict';
+<script>
+(function(){
+  'use strict';
+  
+  // ===== НАЛАШТУВАННЯ (БЕЗ ТОКЕНІВ!) =====
+  const ITEMS = [
+    { code:"Y01577", name:"Дворівнева кухонна дошка", landing:"https://storage10.tilda.ws/page43259563.html", drive:"https://drive.google.com/file/d/1PbZLWJJrnwPaZyxTFUYJUN1vwR5IKxo4/view?usp=sharing" },
+    { code:"Y01576", name:"Зварювальна маска", landing:"https://storage10.tilda.ws/page43283015.html", drive:"https://drive.google.com/file/d/1r8FMbSKcr42sFHLse2OKXVfl3RRfiAQm/view?usp=sharing" },
+    { code:"Y01566", name:"Сопла для різака (3 шт)", landing:"https://storage10.tilda.ws/page43000444.html", drive:"https://drive.google.com/file/d/1d7pVkSyNgXIYydSp_XEalzRUov3kwGWV/view?usp=sharing" },
+    { code:"C00594", name:"Безпечний кігтеріз для домашніх тварин", landing:"https://storage10.tilda.ws/page43444587.html", drive:"https://drive.google.com/file/d/1qIDm5sD6FlxO_hsTEn5bQxx06yCTTSZ2/view?usp=sharing" },
+    { code:"K00189", name:"Інструмент для зчищення бджолиних сот", landing:"https://bundle-storage1.tilda.ws/page40048237.html", drive:"https://drive.google.com/file/d/1DbYm3Er3hu5vBcvYghpH0WiKVMftQfiv/view" }
+  ];
 
-      // ===== НАЛАШТУВАННЯ (БЕЗ ТОКЕНІВ!) =====
-      const ITEMS = [
-        { code: "Y01577", name: "Дворівнева кухонна дошка", landing: "https://storage10.tilda.ws/page43259563.html", drive: "https://drive.google.com/file/d/1PbZLWJJrnwPaZyxTFUYJUN1vwR5IKxo4/view?usp=sharing" },
-        { code: "Y01576", name: "Зварювальна маска", landing: "https://storage10.tilda.ws/page43283015.html", drive: "https://drive.google.com/file/d/1r8FMbSKcr42sFHLse2OKXVfl3RRfiAQm/view?usp=sharing" },
-        { code: "Y01566", name: "Сопла для різака (3 шт)", landing: "https://storage10.tilda.ws/page43000444.html", drive: "https://drive.google.com/file/d/1d7pVkSyNgXIYydSp_XEalzRUov3kwGWV/view?usp=sharing" },
-        { code: "C00594", name: "Безпечний кігтеріз для домашніх тварин", landing: "https://storage10.tilda.ws/page43444587.html", drive: "https://drive.google.com/file/d/1qIDm5sD6FlxO_hsTEn5bQxx06yCTTSZ2/view?usp=sharing" },
-        { code: "K00189", name: "Інструмент для зчищення бджолиних сот", landing: "https://bundle-storage1.tilda.ws/page40048237.html", drive: "https://drive.google.com/file/d/1DbYm3Er3hu5vBcvYghpH0WiKVMftQfiv/view" }
-      ];
+  // ===== УТИЛІТИ =====
+  const pad = n => String(n).padStart(2, '0');
+  const formatTime = ms => {
+    const s = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const ss = s % 60;
+    return `${pad(h)}:${pad(m)}:${pad(ss)}`;
+  };
+  const formatDateTime = d => {
+    const dt = d instanceof Date ? d : new Date(d);
+    return `${pad(dt.getDate())}.${pad(dt.getMonth() + 1)}.${dt.getFullYear()}, ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+  };
+  const driveToPreview = url => {
+    const match = url.match(/\/d\/([^/]+)/);
+    return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
+  };
 
-      // ===== УТИЛІТИ =====
-      const pad = n => String(n).padStart(2, '0');
-      const formatTime = ms => {
-        const s = Math.max(0, Math.floor(ms / 1000));
-        const h = Math.floor(s / 3600);
-        const m = Math.floor((s % 3600) / 60);
-        const ss = s % 60;
-        return `${pad(h)}:${pad(m)}:${pad(ss)}`;
-      };
-      const formatDateTime = d => {
-        const dt = d instanceof Date ? d : new Date(d);
-        return `${pad(dt.getDate())}.${pad(dt.getMonth() + 1)}.${dt.getFullYear()}, ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
-      };
-      const driveToPreview = url => {
-        const match = url.match(/\/d\/([^/]+)/);
-        return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
-      };
+  // ===== СТАН =====
+  const state = {};
+  const itemsContainer = document.getElementById('items');
+  const sendBtn = document.getElementById('sendBtn');
 
-      // ===== СТАН =====
-      const state = {};
-      const itemsContainer = document.getElementById('items');
-      const sendBtn = document.getElementById('sendBtn');
-
-      // ===== OBSERVER ЧАСУ ВИДИМОСТІ =====
-      let visibilityObserver = null;
-      try {
-        visibilityObserver = new IntersectionObserver((entries) => {
-          for (const entry of entries) {
-            const code = entry.target.dataset.code;
-            if (!state[code]) continue;
-            const s = state[code];
-            if (entry.isIntersecting) {
-              s.visibleStart = performance.now();
-            } else if (s.visibleStart) {
-              s.visibleMs += performance.now() - s.visibleStart;
-              s.visibleStart = 0;
-            }
-          }
-        }, { threshold: 0.35 });
-      } catch (e) {
-        console.log('IntersectionObserver не поддерживается: ' + e.message);
-      }
-
-      setInterval(() => {
-        for (const item of ITEMS) {
-          const s = state[item.code];
-          if (!s) continue;
-          if (s.typingStart) {
-            s.typingMs += performance.now() - s.typingStart;
-            s.typingStart = performance.now();
-          }
+  // ===== OBSERVER ЧАСУ ВИДИМОСТІ =====
+  let visibilityObserver = null;
+  try {
+    visibilityObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const code = entry.target.dataset.code;
+        if (!state[code]) continue;
+        const s = state[code];
+        if (entry.isIntersecting) {
+          s.visibleStart = performance.now();
+        } else if (s.visibleStart) {
+          s.visibleMs += performance.now() - s.visibleStart;
+          s.visibleStart = 0;
         }
-      }, 1000);
+      }
+    }, { threshold: 0.35 });
+  } catch (e) {
+    console.log('IntersectionObserver не поддерживается: ' + e.message);
+  }
 
-      // ===== РЕНДЕР ТОВАРІВ =====
-      for (const item of ITEMS) {
-        const card = document.createElement('article');
-        card.className = 'card';
-        card.dataset.code = item.code;
+  setInterval(() => {
+    for (const item of ITEMS) {
+      const s = state[item.code];
+      if (!s) continue;
+      if (s.typingStart) {
+        s.typingMs += performance.now() - s.typingStart;
+        s.typingStart = performance.now();
+      }
+    }
+  }, 1000);
 
-        card.innerHTML = `
+  // ===== РЕНДЕР ТОВАРІВ =====
+  for (const item of ITEMS) {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.dataset.code = item.code;
+    
+    card.innerHTML = `
       <div class="card-head">
         <div class="tag">${item.code}</div>
         <div class="name">— ${item.name}</div>
@@ -494,217 +194,254 @@
       </div>
     `;
 
-        const copyTextarea = card.querySelector('textarea[data-field="copy"]');
-        const analysisTextarea = card.querySelector('textarea[data-field="analysis"]');
+    const copyTextarea = card.querySelector('textarea[data-field="copy"]');
+    const analysisTextarea = card.querySelector('textarea[data-field="analysis"]');
 
-        state[item.code] = {
-          visibleMs: 0,
-          typingMs: 0,
-          visibleStart: 0,
-          typingStart: 0,
-          doneAt: null,
-          elements: { copy: copyTextarea, analysis: analysisTextarea }
-        };
+    state[item.code] = {
+      visibleMs: 0,
+      typingMs: 0,
+      visibleStart: 0,
+      typingStart: 0,
+      doneAt: null,
+      elements: { copy: copyTextarea, analysis: analysisTextarea }
+    };
 
-        for (const textarea of [copyTextarea, analysisTextarea]) {
-          textarea.addEventListener('focus', () => {
-            const s = state[item.code];
-            if (!s.typingStart) s.typingStart = performance.now();
-          });
-          textarea.addEventListener('blur', () => {
-            const s = state[item.code];
-            if (s.typingStart) {
-              s.typingMs += performance.now() - s.typingStart;
-              s.typingStart = 0;
-            }
-          });
-          textarea.addEventListener('input', validateAllRequired);
+    for (const textarea of [copyTextarea, analysisTextarea]) {
+      textarea.addEventListener('focus', () => {
+        const s = state[item.code];
+        if (!s.typingStart) s.typingStart = performance.now();
+      });
+      textarea.addEventListener('blur', () => {
+        const s = state[item.code];
+        if (s.typingStart) {
+          s.typingMs += performance.now() - s.typingStart;
+          s.typingStart = 0;
         }
+      });
+      textarea.addEventListener('input', validateAllRequired);
+    }
 
-        if (visibilityObserver) {
-          visibilityObserver.observe(card);
-        }
-        itemsContainer.appendChild(card);
-      }
+    if (visibilityObserver) {
+      visibilityObserver.observe(card);
+    }
+    itemsContainer.appendChild(card);
+  }
 
-      // ===== ПІБ/Telegram =====
-      const fioInput = document.getElementById('fio');
-      const tgInput = document.getElementById('tg');
-      const fioWarn = document.getElementById('fioWarn');
-      const tgWarn = document.getElementById('tgWarn');
-      const savePersonBtn = document.getElementById('savePerson');
-      const editPersonBtn = document.getElementById('editPerson');
-      const saveHint = document.getElementById('saveHint');
+  // ===== ПІБ/Telegram ВАЛІДАЦІЯ =====
+  const fioInput = document.getElementById('fio');
+  const tgInput = document.getElementById('tg');
+  const fioWarn = document.getElementById('fioWarn');
+  const tgWarn = document.getElementById('tgWarn');
 
-      const validateFio = () => {
-        const ok = fioInput.value.trim().length > 3;
-        fioWarn.style.display = ok ? 'none' : 'inline';
-        fioInput.classList.toggle('invalid', !ok);
-        return ok;
+  const validateFio = () => {
+    const ok = fioInput.value.trim().length > 3;
+    fioWarn.style.display = ok ? 'none' : 'inline';
+    fioInput.classList.toggle('invalid', !ok);
+    return ok;
+  };
+
+  const validateTg = () => {
+    const value = tgInput.value.trim();
+    
+    if (value.length === 0) {
+      tgWarn.textContent = 'Вкажіть Telegram, будь ласка.';
+      tgWarn.style.display = 'inline';
+      tgInput.classList.add('invalid');
+      return false;
+    }
+
+    // Проверяем формат полной ссылки https://t.me/username
+    const fullLinkRegex = /^https:\/\/t\.me\/([a-zA-Z0-9_]{5,32})$/;
+    const fullLinkMatch = value.match(fullLinkRegex);
+    
+    if (fullLinkMatch) {
+      // Валидная полная ссылка
+      tgWarn.style.display = 'none';
+      tgInput.classList.remove('invalid');
+      return true;
+    }
+
+    // Проверяем формат короткой ссылки t.me/username
+    const shortLinkRegex = /^t\.me\/([a-zA-Z0-9_]{5,32})$/;
+    const shortLinkMatch = value.match(shortLinkRegex);
+    
+    if (shortLinkMatch) {
+      // Валидная короткая ссылка
+      tgWarn.style.display = 'none';
+      tgInput.classList.remove('invalid');
+      return true;
+    }
+
+    // Проверяем формат неймтега @username или username
+    let username = value;
+    if (username.startsWith('@')) {
+      username = username.substring(1);
+    }
+
+    // Username должен быть 5-32 символа, только латиница, цифры и подчеркивания
+    const usernameRegex = /^[a-zA-Z0-9_]{5,32}$/;
+    
+    if (usernameRegex.test(username)) {
+      // Валидный неймтег
+      tgWarn.style.display = 'none';
+      tgInput.classList.remove('invalid');
+      return true;
+    }
+
+    // Неправильный формат
+    tgWarn.textContent = 'Неправильний формат. Використовуйте @username, t.me/username або https://t.me/username';
+    tgWarn.style.display = 'inline';
+    tgInput.classList.add('invalid');
+    return false;
+  };
+
+  fioInput.addEventListener('input', () => { validateFio(); validateAllRequired(); });
+  tgInput.addEventListener('input', () => { validateTg(); validateAllRequired(); });
+
+  // ===== ВАЛІДАЦІЯ =====
+  function validateAllRequired() {
+    let allOk = true;
+    if (!validateFio()) allOk = false;
+    if (!validateTg()) allOk = false;
+    document.querySelectorAll('textarea[data-field]').forEach(t => {
+      const ok = t.value.trim().length > 0;
+      t.classList.toggle('invalid', !ok);
+      if (!ok) allOk = false;
+    });
+    sendBtn.disabled = !allOk;
+    return allOk;
+  }
+
+  // ===== ФІНАЛІЗАЦІЯ =====
+  function finalizeAllTimes() {
+    for (const item of ITEMS) {
+      const s = state[item.code];
+      if (!s) continue;
+      if (s.visibleStart) { s.visibleMs += performance.now() - s.visibleStart; s.visibleStart = 0; }
+      if (s.typingStart) { s.typingMs += performance.now() - s.typingStart; s.typingStart = 0; }
+      s.doneAt = new Date();
+    }
+  }
+
+  // ===== БЕЗПЕЧНА ОТПРАВКА ЧЕРЕЗ NETLIFY FUNCTION =====
+  async function submitResultsSecurely() {
+    console.log('Отправка через защищенную функцию...');
+    
+    // Нормализуем telegram поле
+    let telegramValue = tgInput.value.trim();
+    if (telegramValue.startsWith('https://t.me/')) {
+      // Извлекаем username из полной ссылки
+      telegramValue = '@' + telegramValue.replace('https://t.me/', '');
+    } else if (telegramValue.startsWith('t.me/')) {
+      // Извлекаем username из короткой ссылки
+      telegramValue = '@' + telegramValue.replace('t.me/', '');
+    } else if (!telegramValue.startsWith('@') && telegramValue.length > 0) {
+      // Добавляем @ к неймтегу если его нет
+      telegramValue = '@' + telegramValue;
+    }
+    
+    const formData = {
+      fio: fioInput.value.trim(),
+      telegram: telegramValue,
+      submitted_at: new Date().toISOString(),
+      submitted_at_local: formatDateTime(new Date()),
+      page_url: window.location.href,
+      user_agent: navigator.userAgent,
+      version: '5.2_TELEGRAM_FORMATTING',
+      summary: { total_view_time: 0, total_typing_time: 0, items_count: ITEMS.length },
+      items: {}
+    };
+
+    for (const item of ITEMS) {
+      const s = state[item.code];
+      const copyText = s.elements.copy.value.trim();
+      const analysisText = s.elements.analysis.value.trim();
+      formData.summary.total_view_time += s.visibleMs;
+      formData.summary.total_typing_time += s.typingMs;
+
+      formData.items[item.code] = {
+        code: item.code, name: item.name, landing: item.landing, video: item.drive,
+        ads_copy: copyText, analysis: analysisText,
+        time_view_ms: s.visibleMs, time_view_formatted: formatTime(s.visibleMs),
+        time_typing_ms: s.typingMs, time_typing_formatted: formatTime(s.typingMs),
+        completed_at: formatDateTime(s.doneAt),
+        text_length_copy: copyText.length, text_length_analysis: analysisText.length
       };
-      const validateTg = () => {
-        const ok = tgInput.value.trim().length > 0;
-        tgWarn.style.display = ok ? 'none' : 'inline';
-        tgInput.classList.toggle('invalid', !ok);
-        return ok;
-      };
+    }
 
-      function setPersonLocked(locked) {
-        fioInput.disabled = locked;
-        tgInput.disabled = locked;
-        savePersonBtn.hidden = locked;
-        editPersonBtn.hidden = !locked;
-        saveHint.textContent = locked ? 'Збережено. Для редагування натисніть ✎' : '';
-      }
+    formData.summary.total_view_time_formatted = formatTime(formData.summary.total_view_time);
+    formData.summary.total_typing_time_formatted = formatTime(formData.summary.total_typing_time);
 
-      savePersonBtn.addEventListener('click', () => {
-        const ok = validateFio() && validateTg();
-        if (!ok) return;
-        setPersonLocked(true);
-        validateAllRequired();
+    try {
+      // Отправляем данные на НАШУ защищенную функцию
+      const response = await fetch('/.netlify/functions/send-results', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
       });
 
-      editPersonBtn.addEventListener('click', () => {
-        setPersonLocked(false);
-        fioInput.focus();
-        validateAllRequired();
-      });
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || `HTTP ${response.status}`);
+      }
 
-      fioInput.addEventListener('input', () => { validateFio(); validateAllRequired(); });
-      tgInput.addEventListener('input', () => { validateTg(); validateAllRequired(); });
-
-      // ===== ВАЛІДАЦІЯ =====
-      function validateAllRequired() {
-        let allOk = true;
-        if (!validateFio()) allOk = false;
-        if (!validateTg()) allOk = false;
-        document.querySelectorAll('textarea[data-field]').forEach(t => {
-          const ok = t.value.trim().length > 0;
-          t.classList.toggle('invalid', !ok);
-          if (!ok) allOk = false;
+      console.log('Результаты успешно отправлены:', result);
+      return true;
+      
+    } catch (error) {
+      console.error('Ошибка отправки:', error.message);
+      
+      // Резерв в localStorage
+      try {
+        const backupKey = `secure_backup_${Date.now()}`;
+        const backups = JSON.parse(localStorage.getItem('secure_backups') || '[]');
+        backups.push({ 
+          key: backupKey, 
+          timestamp: new Date().toISOString(), 
+          candidate: formData.fio,
+          data: formData, 
+          error: error.message 
         });
-        sendBtn.disabled = !allOk;
-        return allOk;
+        localStorage.setItem('secure_backups', JSON.stringify(backups));
+        console.log(`Сохранено в localStorage: ${backupKey}`);
+      } catch (storageError) {
+        console.error('Ошибка localStorage');
       }
+      
+      // Для кандидата показываем успех
+      return true;
+    }
+  }
 
-      // ===== ФІНАЛІЗАЦІЯ =====
-      function finalizeAllTimes() {
-        for (const item of ITEMS) {
-          const s = state[item.code];
-          if (!s) continue;
-          if (s.visibleStart) { s.visibleMs += performance.now() - s.visibleStart; s.visibleStart = 0; }
-          if (s.typingStart) { s.typingMs += performance.now() - s.typingStart; s.typingStart = 0; }
-          s.doneAt = new Date();
-        }
-      }
+  // ===== КНОПКА ОТПРАВКИ =====
+  sendBtn.addEventListener('click', async () => {
+    if (!validateAllRequired()) {
+      const bad = document.querySelector('.invalid') || document.querySelector('.warn[style*="inline"]');
+      if (bad) (bad.closest('.fio') || bad).scrollIntoView({ behavior:'smooth', block:'center' });
+      return;
+    }
 
-      // ===== БЕЗПЕЧНА ОТПРАВКА ЧЕРЕЗ NETLIFY FUNCTION =====
-      async function submitResultsSecurely() {
-        console.log('Отправка через защищенную функцию...');
+    finalizeAllTimes();
 
-        const formData = {
-          fio: fioInput.value.trim(),
-          telegram: tgInput.value.trim(),
-          submitted_at: new Date().toISOString(),
-          submitted_at_local: formatDateTime(new Date()),
-          page_url: window.location.href,
-          user_agent: navigator.userAgent,
-          version: '5.0_SECURE_MODE',
-          summary: { total_view_time: 0, total_typing_time: 0, items_count: ITEMS.length },
-          items: {}
-        };
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Відправляється...';
+    sendBtn.style.opacity = '0.7';
 
-        for (const item of ITEMS) {
-          const s = state[item.code];
-          const copyText = s.elements.copy.value.trim();
-          const analysisText = s.elements.analysis.value.trim();
-          formData.summary.total_view_time += s.visibleMs;
-          formData.summary.total_typing_time += s.typingMs;
+    await submitResultsSecurely();
 
-          formData.items[item.code] = {
-            code: item.code, name: item.name, landing: item.landing, video: item.drive,
-            ads_copy: copyText, analysis: analysisText,
-            time_view_ms: s.visibleMs, time_view_formatted: formatTime(s.visibleMs),
-            time_typing_ms: s.typingMs, time_typing_formatted: formatTime(s.typingMs),
-            completed_at: formatDateTime(s.doneAt),
-            text_length_copy: copyText.length, text_length_analysis: analysisText.length
-          };
-        }
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-        formData.summary.total_view_time_formatted = formatTime(formData.summary.total_view_time);
-        formData.summary.total_typing_time_formatted = formatTime(formData.summary.total_typing_time);
+    sendBtn.textContent = '✅ Відправлено!';
+    sendBtn.style.opacity = '1';
+    
+    setTimeout(() => {
+      alert('✅ Ваші відповіді успішно відправлено!\n\nДякуємо за участь у тестуванні.\nОчікуйте на зворотний зв\'язок.');
+    }, 500);
+  });
 
-        try {
-          // Отправляем данные на НАШУ защищенную функцию
-          const response = await fetch('/.netlify/functions/send-results', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-          });
-
-          const result = await response.json();
-
-          if (!response.ok) {
-            throw new Error(result.error || `HTTP ${response.status}`);
-          }
-
-          console.log('Результаты успешно отправлены:', result);
-          return true;
-
-        } catch (error) {
-          console.error('Ошибка отправки:', error.message);
-
-          // Резерв в localStorage
-          try {
-            const backupKey = `secure_backup_${Date.now()}`;
-            const backups = JSON.parse(localStorage.getItem('secure_backups') || '[]');
-            backups.push({
-              key: backupKey,
-              timestamp: new Date().toISOString(),
-              candidate: formData.fio,
-              data: formData,
-              error: error.message
-            });
-            localStorage.setItem('secure_backups', JSON.stringify(backups));
-            console.log(`Сохранено в localStorage: ${backupKey}`);
-          } catch (storageError) {
-            console.error('Ошибка localStorage');
-          }
-
-          // Для кандидата показываем успех
-          return true;
-        }
-      }
-
-      // ===== КНОПКА ОТПРАВКИ =====
-      sendBtn.addEventListener('click', async () => {
-        if (!validateAllRequired()) {
-          const bad = document.querySelector('.invalid') || document.querySelector('.warn[style*="inline"]');
-          if (bad) (bad.closest('.fio') || bad).scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        finalizeAllTimes();
-
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Відправляється...';
-        sendBtn.style.opacity = '0.7';
-
-        await submitResultsSecurely();
-
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        sendBtn.textContent = '✅ Відправлено!';
-        sendBtn.style.opacity = '1';
-
-        setTimeout(() => {
-          alert('✅ Ваші відповіді успішно відправлено!\n\nДякуємо за участь у тестуванні.\nОчікуйте на зворотний зв\'язок.');
-        }, 500);
-      });
-
-      validateAllRequired();
-    })();
-  </script>
+  validateAllRequired();
+})();
+</script>
 </body>
-
 </html>
