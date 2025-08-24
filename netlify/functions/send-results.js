@@ -1,7 +1,7 @@
 const https = require('https');
 
 exports.handler = async (event, context) => {
-  // Проверяем метод
+  // Check HTTP method
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -11,30 +11,30 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    // Получаем данные
+    // Parse form data
     const formData = JSON.parse(event.body);
     
-    // Токен бота из переменных окружения (БЕЗОПАСНО!)
+    // Get bot token from environment variables
     const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
     
     if (!BOT_TOKEN) {
       throw new Error('Telegram bot token not configured');
     }
 
-    // Получаем список всех чатов
+    // Get all subscriber chat IDs
     const chatIds = await getAllChats(BOT_TOKEN);
     
     if (chatIds.length === 0) {
       throw new Error('No subscribers found');
     }
 
-    // Форматируем сообщение
+    // Format message content
     const message = formatMessage(formData);
     
-    // Разбиваем на части
+    // Split message into parts if needed
     const messageParts = splitMessage(message);
     
-    // Отправляем всем
+    // Send to all subscribers
     let successCount = 0;
     
     for (const chatId of chatIds) {
@@ -48,7 +48,7 @@ exports.handler = async (event, context) => {
         console.error(`Error sending to ${chatId}:`, error.message);
       }
       
-      await sleep(100); // Защита от лимитов
+      await sleep(100); // Rate limiting protection
     }
 
     return {
@@ -75,7 +75,7 @@ exports.handler = async (event, context) => {
   }
 };
 
-// Получить все чаты
+// Get all subscriber chats
 async function getAllChats(botToken) {
   const updates = await makeRequest('GET', `https://api.telegram.org/bot${botToken}/getUpdates?limit=100`);
   
@@ -94,7 +94,7 @@ async function getAllChats(botToken) {
   return Array.from(chatIds);
 }
 
-// Отправить сообщение
+// Send message to chat
 async function sendMessage(botToken, chatId, message) {
   const payload = {
     chat_id: chatId,
@@ -112,7 +112,7 @@ async function sendMessage(botToken, chatId, message) {
   return result;
 }
 
-// HTTP запрос
+// Make HTTP request
 function makeRequest(method, url, data = null) {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
@@ -156,52 +156,51 @@ function makeRequest(method, url, data = null) {
   });
 }
 
-// Форматирование сообщения
+// Format message content
 function formatMessage(formData) {
-  let message = `<b>📋 НОВЫЙ КАНДИДАТ - FB ADS TEST</b>\n\n`;
+  let message = `<b>📋 НОВИЙ КАНДИДАТ - FB ADS TEST</b>\n\n`;
   
   message += `<b>👤 Кандидат:</b> <code>${formData.fio}</code>\n`;
   message += `<b>📱 Telegram:</b> ${formData.telegram}\n`;
-  message += `<b>🕐 Дата прохождения:</b> ${formData.submitted_at_local}\n\n`;
+  message += `<b>🕐 Дата проходження:</b> ${formData.submitted_at_local}\n\n`;
 
-  message += `<b>⏱ Статистика времени:</b>\n`;
-  message += `• Общее время просмотра: ${formData.summary.total_view_time_formatted}\n`;
-  message += `• Общее время набора: ${formData.summary.total_typing_time_formatted}\n`;
-  message += `• Количество товаров: ${formData.summary.items_count}\n\n`;
+  message += `<b>⏱ Статистика часу:</b>\n`;
+  message += `• Загальний час перегляду: ${formData.summary.total_view_time_formatted}\n`;
+  message += `• Загальний час набору: ${formData.summary.total_typing_time_formatted}\n`;
+  message += `• Кількість товарів: ${formData.summary.items_count}\n\n`;
 
-  message += `<b>📝 ОТВЕТЫ ПО ТОВАРАМ:</b>\n${'═'.repeat(30)}\n`;
+  message += `<b>📝 ВІДПОВІДІ ПО ТОВАРАХ:</b>\n${'═'.repeat(30)}\n`;
 
   for (const [code, item] of Object.entries(formData.items)) {
     message += `\n<b>${item.code} - ${item.name}</b>\n`;
-    message += `⏱ Время: просмотр ${item.time_view_formatted} | набор ${item.time_typing_formatted}\n`;
+    message += `⏱ Час: перегляд ${item.time_view_formatted} | набір ${item.time_typing_formatted}\n`;
     
-    message += `\n<b>📢 РЕКЛАМНЫЙ ТЕКСТ:</b>\n<code>${item.ads_copy}</code>\n`;
-    message += `\n<b>🔍 АНАЛИЗ И РЕКОМЕНДАЦИИ:</b>\n<code>${item.analysis}</code>\n`;
-    message += `\n<b>🔗 Материалы:</b>\n• <a href="${item.landing}">Лендинг</a> | <a href="${item.video}">Видео</a>\n`;
+    message += `\n<b>📢 РЕКЛАМНИЙ ТЕКСТ:</b>\n<code>${item.ads_copy}</code>\n`;
+    message += `\n<b>🔍 АНАЛІЗ ТА РЕКОМЕНДАЦІЇ:</b>\n<code>${item.analysis}</code>\n`;
+    message += `\n<b>🔗 Матеріали:</b>\n• <a href="${item.landing}">Лендінг</a> | <a href="${item.video}">Відео</a>\n`;
     message += `\n${'─'.repeat(25)}\n`;
   }
 
-  message += `\n<b>💻 Технические данные:</b>\n`;
-  message += `• Страница: ${formData.page_url}\n`;
-  message += `• Устройство: ${formData.user_agent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop'}\n`;
-  message += `• Версия системы: ${formData.version}\n`;
+  message += `\n<b>💻 Технічні дані:</b>\n`;
+  message += `• Сторінка: ${formData.page_url}\n`;
+  message += `• Пристрій: ${formData.user_agent.includes('Mobile') ? '📱 Mobile' : '💻 Desktop'}\n`;
 
   return message;
 }
 
-// Разбить сообщение на части
+// Split message into parts for telegram limits
 function splitMessage(message, maxLength = 4000) {
   if (message.length <= maxLength) {
     return [message];
   }
 
   const parts = [];
-  const headerEnd = message.indexOf('📝 ОТВЕТЫ ПО ТОВАРАМ:');
+  const headerEnd = message.indexOf('📝 ВІДПОВІДІ ПО ТОВАРАХ:');
   const header = message.substring(0, headerEnd);
   const itemsSection = message.substring(headerEnd);
   const items = itemsSection.split('─'.repeat(25));
   
-  parts.push(header + '📝 ОТВЕТЫ ПО ТОВАРАМ:\n' + '═'.repeat(30));
+  parts.push(header + '📝 ВІДПОВІДІ ПО ТОВАРАХ:\n' + '═'.repeat(30));
   
   let currentPart = '';
   for (let i = 0; i < items.length; i++) {
@@ -218,7 +217,7 @@ function splitMessage(message, maxLength = 4000) {
   return parts;
 }
 
-// Задержка
+// Delay function
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
