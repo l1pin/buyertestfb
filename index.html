@@ -43,6 +43,18 @@
   .icon-btn[hidden]{display:none}
   .hint{font-size:12px;color:var(--muted)}
   .debug{position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:#fff;padding:8px;border-radius:4px;font-size:11px;max-width:300px;word-wrap:break-word;z-index:1000;display:none!important}
+  
+  .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(11,13,18,0.95);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:10000;opacity:0;visibility:hidden;transition:all 0.3s ease}
+  .modal.show{opacity:1;visibility:visible}
+  .modal-content{background:linear-gradient(145deg,var(--panel),#0f1419);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);transform:scale(0.8) translateY(20px);transition:all 0.3s cubic-bezier(0.68,-0.55,0.265,1.55)}
+  .modal.show .modal-content{transform:scale(1) translateY(0)}
+  .modal-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--ok),#38e182);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:pulse 2s infinite}
+  .modal-icon svg{width:40px;height:40px;color:#fff}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(39,193,85,0.7)}50%{box-shadow:0 0 0 20px rgba(39,193,85,0)}}
+  .modal-title{font-size:24px;font-weight:700;color:var(--text);margin:0 0 12px}
+  .modal-text{font-size:16px;color:var(--muted);line-height:1.6;margin:0 0 32px}
+  .modal-btn{appearance:none;border:0;cursor:pointer;padding:14px 24px;border-radius:12px;font-weight:700;font-size:16px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;transition:all 0.2s;box-shadow:0 8px 20px rgba(110,141,255,0.3)}
+  .modal-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(110,141,255,0.4)}
 </style>
 </head>
 <body>
@@ -92,6 +104,20 @@
 
 <div id="debug" class="debug" style="display:none;"></div>
 
+<!-- Модальное окно успеха -->
+<div id="successModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-icon">
+      <svg fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+      </svg>
+    </div>
+    <h2 class="modal-title">Форма успішно відправлена!</h2>
+    <p class="modal-text">Дякуємо за участь у тестуванні.<br>Ми зв'яжемося з вами найближчим часом.</p>
+    <button id="closeModal" class="modal-btn">Зрозуміло</button>
+  </div>
+</div>
+
 <script>
 (function(){
   'use strict';
@@ -122,6 +148,32 @@
     const match = url.match(/\/d\/([^/]+)/);
     return match ? `https://drive.google.com/file/d/${match[1]}/preview` : url;
   };
+
+  // ===== МОДАЛЬНОЕ ОКНО УСПЕХА =====
+  const successModal = document.getElementById('successModal');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  function showSuccessModal() {
+    successModal.classList.add('show');
+    document.body.style.overflow = 'hidden'; // блокируем скролл
+  }
+
+  function hideSuccessModal() {
+    successModal.classList.remove('show');
+    document.body.style.overflow = ''; // разблокируем скролл
+  }
+
+  closeModalBtn.addEventListener('click', hideSuccessModal);
+  successModal.addEventListener('click', (e) => {
+    if (e.target === successModal) hideSuccessModal(); // закрытие при клике вне окна
+  });
+
+  // Закрытие по ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && successModal.classList.contains('show')) {
+      hideSuccessModal();
+    }
+  });
 
   // ===== СТАН =====
   const state = {};
